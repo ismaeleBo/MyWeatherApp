@@ -11,16 +11,16 @@ export const weatherApi = createApi({
       query: city => ({
         url: `weather?q=${city}&appid=${OPEN_WEATHER_KEY}&units=metric`,
       }),
-      transformResponse: transformWeatherData,
     }),
   }),
 });
 
-const transformWeatherData = response => {
-  response.temp = response.main.temp;
-  response.weather = response.weather[0].main;
-  response.time = new Date(response.dt * 1000 + response.timezone * 1000);
-  return response;
-};
+// const transformWeatherData = response => {
+//   const data = {};
+//   data.temp = response.main.temp;
+//   data.weather = response.weather[0].main;
+//   data.time = new Date(response.dt * 1000 + response.timezone * 1000);
+//   return response;
+// };
 // Export hooks for usage in functional components
 export const {useGetCityWeatherByNameQuery} = weatherApi;

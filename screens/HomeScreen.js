@@ -21,8 +21,9 @@ const Container = styled.View`
   padding-bottom: ${spacingXLarge}px;
 `;
 
-const Box = styled.View`
+const Box = styled.ScrollView`
   margin-top: ${spacingMedium}px;
+  margin-bottom: 100px;
 `;
 
 const Title = styled.Text`
@@ -34,13 +35,32 @@ const Title = styled.Text`
 `;
 
 const HomeScreen = ({navigation}) => {
+  const favouriteCities = useSelector(state => state.favouriteCities);
+
+  console.log(favouriteCities);
+
   return (
     <Container>
       <Title>Good morning!</Title>
       <AddNewCity />
       <Box>
         <CityCard
+          city={'London'}
+          image={sunny}
+          onPress={() => navigation.navigate('City')}
+        />
+        <CityCard
           city={'Catania'}
+          image={sunny}
+          onPress={() => navigation.navigate('City')}
+        />
+        <CityCard
+          city={'Agnone bagni'}
+          image={sunny}
+          onPress={() => navigation.navigate('City')}
+        />
+        <CityCard
+          city={'Messina'}
           image={sunny}
           onPress={() => navigation.navigate('City')}
         />

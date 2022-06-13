@@ -8,12 +8,22 @@ import {
 } from '../assets/fontSize';
 import {spacingXXSmall, spacingXSmall, spacingSmall} from '../assets/spacing';
 import {baseBorderRadius} from '../assets/borderRadius';
-import {white, darkAzure, lightAzure, darkGray} from '../assets/colors';
+import {
+  white,
+  darkAzure,
+  lightAzure,
+  darkGray,
+  darkBlue,
+} from '../assets/colors';
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 import {fetchWeatherAction} from '../../store/slices/weatherSlice';
 import {useDispatch} from 'react-redux';
 import {useGetCityWeatherByNameQuery} from '../../services/getWeather';
+
+const Container = styled.View`
+  margin-bottom: ${spacingSmall}px;
+`;
 
 const Box = styled.View`
   padding: ${spacingSmall}px;
@@ -25,6 +35,12 @@ const Box = styled.View`
 const DataBox = styled.View`
   align-items: flex-start;
   flex-shrink: 1;
+`;
+
+const ErrorText = styled.Text`
+  font-size: ${fontSizeXLarge}px;
+  color: ${darkBlue};
+  font-family: 'Poppins-SemiBold';
 `;
 
 const CityText = styled.Text`
@@ -54,9 +70,14 @@ const TemperatureText = styled.Text`
 `;
 
 const CityCard = ({city, image, onPress}) => {
-  // const data = useGetCityWeatherByNameQuery('london');
+  const {data, isError, refetch} = useGetCityWeatherByNameQuery(
+    city.toLowerCase(),
+  );
 
-  // console.log(data);
+  // console.log(data, isError);
+
+  // const data = {};
+  // const isError = true;
 
   /*
     Possible weather conditions
@@ -71,24 +92,35 @@ const CityCard = ({city, image, onPress}) => {
   */
 
   return (
-    <TouchableOpacity onPress={onPress}>
-      <LinearGradient
-        colors={[darkAzure, lightAzure]}
-        style={{borderRadius: baseBorderRadius, backgroundColor: darkGray}}
-        start={{x: 0, y: 1}}>
-        <Box>
-          <DataBox>
-            <CityText>Catania</CityText>
-            <DateText>12 giugno</DateText>
-            <DateText>2022</DateText>
-            <HourText>01:54</HourText>
-          </DataBox>
+    <Container>
+      {data && data.name && data.main.temp && !isError && (
+        <TouchableOpacity onPress={onPress}>
+          <LinearGradient
+            colors={[darkAzure, lightAzure]}
+            style={{borderRadius: baseBorderRadius, backgroundColor: darkGray}}
+            start={{x: 0, y: 1}}>
+            <Box>
+              <DataBox>
+                <CityText>{data.name}</CityText>
+                <DateText>12 giugno</DateText>
+                <DateText>2022</DateText>
+                <HourText>01:54</HourText>
+              </DataBox>
 
-          <Image source={image} />
-          <TemperatureText>28°</TemperatureText>
-        </Box>
-      </LinearGradient>
-    </TouchableOpacity>
+              <Image source={image} />
+              <TemperatureText>{Math.round(data.main.temp)}°</TemperatureText>
+            </Box>
+          </LinearGradient>
+        </TouchableOpacity>
+      )}
+      {isError && (
+        <TouchableOpacity onPress={() => null}>
+          <Box>
+            <ErrorText>There is an error, press to retry</ErrorText>
+          </Box>
+        </TouchableOpacity>
+      )}
+    </Container>
   );
 };
 
