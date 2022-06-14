@@ -7,7 +7,9 @@ export const favoriteCitiesSlice = createSlice({
   },
   reducers: {
     addCity: (state, action) => {
-      state.value.push(action.payload);
+      if (!state.value.includes(action.payload)) {
+        state.value.push(action.payload);
+      }
     },
     removeCity: (state, action) => {
       state.value = state.value.filter(city => city !== action.payload);

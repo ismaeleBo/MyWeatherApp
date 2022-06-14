@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback} from 'react';
 import {Image, TouchableOpacity} from 'react-native';
 import {
   fontSizeSmall,
@@ -17,9 +17,11 @@ import {
 } from '../assets/colors';
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
-import {fetchWeatherAction} from '../../store/slices/weatherSlice';
-import {useDispatch} from 'react-redux';
-import {useGetCityWeatherByNameQuery} from '../../services/getWeather';
+import {useGetCityWeatherByNameQuery} from '../services/getWeather';
+import {getMonthName, getFullHour, getFullDay} from '../utils';
+import clouds from '../assets/images/cloudy.png';
+import clear from '../assets/images/sunny.png';
+import sunAndRain from '../assets/images/sun-and-rain.png';
 
 const Container = styled.View`
   margin-bottom: ${spacingSmall}px;
@@ -69,15 +71,28 @@ const TemperatureText = styled.Text`
   margin-left: ${spacingXXSmall}px;
 `;
 
-const CityCard = ({city, image, onPress}) => {
+const CityCard = ({city, onPress}) => {
   const {data, isError, refetch} = useGetCityWeatherByNameQuery(
     city.toLowerCase(),
   );
 
-  // console.log(data, isError);
+  const getWeatherIcon = useCallback(() => {
+    if (data && data.weather) {
+      const image =
+        data.weather === 'Clouds'
+          ? clouds
+          : data.weather === 'Clear'
+          ? clear
+          : data.weather === 'Rain'
+          ? sunAndRain
+          : {
+              uri: `http://openweathermap.org/img/wn/${data.weather.icon}`,
+            };
+      return image;
+    }
+  }, [data]);
 
-  // const data = {};
-  // const isError = true;
+  const weatherIcon = getWeatherIcon();
 
   /*
     Possible weather conditions
@@ -88,12 +103,12 @@ const CityCard = ({city, image, onPress}) => {
     5 - Drizzle
     6 - Thunderstorm
     For other cases use http://openweathermap.org/img/wn/${data.weather.icon}
-    to get icon
+    to get icons
   */
 
   return (
     <Container>
-      {data && data.name && data.main.temp && !isError && (
+      {data && data.temp && data.weather && data.time && !isError && (
         <TouchableOpacity onPress={onPress}>
           <LinearGradient
             colors={[darkAzure, lightAzure]}
@@ -101,20 +116,20 @@ const CityCard = ({city, image, onPress}) => {
             start={{x: 0, y: 1}}>
             <Box>
               <DataBox>
-                <CityText>{data.name}</CityText>
-                <DateText>12 giugno</DateText>
-                <DateText>2022</DateText>
-                <HourText>01:54</HourText>
+                <CityText>{city}</CityText>
+                <DateText>{getFullDay(data.time)}</DateText>
+                <DateText>{getMonthName(data.time)}</DateText>
+                <HourText>{getFullHour(data.time)}</HourText>
               </DataBox>
 
-              <Image source={image} />
-              <TemperatureText>{Math.round(data.main.temp)}°</TemperatureText>
+              <Image source={weatherIcon} />
+              <TemperatureText>{Math.round(data.temp)}°</TemperatureText>
             </Box>
           </LinearGradient>
         </TouchableOpacity>
       )}
       {isError && (
-        <TouchableOpacity onPress={() => null}>
+        <TouchableOpacity onPress={refetch}>
           <Box>
             <ErrorText>There is an error, press to retry</ErrorText>
           </Box>

@@ -1,18 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {addCity} from '../store/slices/favouriteCitiesSlice';
-import {fetchWeatherAction, setCity} from '../store/slices/weatherSlice';
-import CityCard from '../designSystem/components/CityCard';
-import {primaryBlue} from '../designSystem/assets/colors';
-import {fontSizeXXLarge} from '../designSystem/assets/fontSize';
-import {
-  spacingSmall,
-  spacingMedium,
-  spacingXLarge,
-} from '../designSystem/assets/spacing';
+import React from 'react';
+import {FlatList} from 'react-native';
+import {useSelector} from 'react-redux';
+import CityCard from '../components/CityCard';
+import {primaryBlue} from '../assets/colors';
+import {fontSizeXXLarge} from '../assets/fontSize';
+import {spacingSmall, spacingMedium, spacingXLarge} from '../assets/spacing';
 import styled from 'styled-components/native';
-import sunny from '../designSystem/images/sunny.png';
-import AddNewCity from '../designSystem/components/AddNewCity';
+import AddNewCity from '../components/AddNewCity';
 
 const Container = styled.View`
   padding-left: ${spacingSmall}px;
@@ -21,9 +15,8 @@ const Container = styled.View`
   padding-bottom: ${spacingXLarge}px;
 `;
 
-const Box = styled.ScrollView`
-  margin-top: ${spacingMedium}px;
-  margin-bottom: 100px;
+const HeaderContainer = styled.View`
+  margin-bottom: ${spacingMedium}px;
 `;
 
 const Title = styled.Text`
@@ -35,36 +28,36 @@ const Title = styled.Text`
 `;
 
 const HomeScreen = ({navigation}) => {
-  const favouriteCities = useSelector(state => state.favouriteCities);
+  const {value: cities} = useSelector(state => state.favouriteCities);
 
-  console.log(favouriteCities);
+  /*
+    COSE DA FARE:
+    - Sistemare flatlist
+    - Eliminare città da preferiti
+    - Splash screen
+    - Navigation tabs
+    - City screen
+    - Store persistente in local storage
+    - Colori delle cards in base alle condizioni
+    - Localizzazione
+  */
 
   return (
     <Container>
-      <Title>Good morning!</Title>
-      <AddNewCity />
-      <Box>
-        <CityCard
-          city={'London'}
-          image={sunny}
-          onPress={() => navigation.navigate('City')}
-        />
-        <CityCard
-          city={'Catania'}
-          image={sunny}
-          onPress={() => navigation.navigate('City')}
-        />
-        <CityCard
-          city={'Agnone bagni'}
-          image={sunny}
-          onPress={() => navigation.navigate('City')}
-        />
-        <CityCard
-          city={'Messina'}
-          image={sunny}
-          onPress={() => navigation.navigate('City')}
-        />
-      </Box>
+      <HeaderContainer>
+        <Title>Good morning!</Title>
+        <AddNewCity />
+      </HeaderContainer>
+      <FlatList
+        data={cities}
+        keyExtractor={(x, i) => i.toString()}
+        renderItem={({item}) => (
+          <CityCard
+            city={item.toString()}
+            onPress={() => navigation.navigate('City')}
+          />
+        )}
+      />
     </Container>
   );
 };
