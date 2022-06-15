@@ -14,6 +14,7 @@ import {
   lightAzure,
   darkGray,
   darkBlue,
+  lightGray,
 } from '../assets/colors';
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -106,12 +107,24 @@ const CityCard = ({city, onPress}) => {
     to get icons
   */
 
+  const getGradientColors = useCallback(() => {
+    if (data && data.weather) {
+      const colors =
+        data.weather === 'Clouds'
+          ? [darkGray, lightGray]
+          : data.weather === 'Clear'
+          ? [darkAzure, lightAzure]
+          : [darkBlue, lightAzure];
+      return colors;
+    }
+  }, [data]);
+
   return (
     <Container>
       {data && data.temp && data.weather && data.time && !isError && (
         <TouchableOpacity onPress={onPress}>
           <LinearGradient
-            colors={[darkAzure, lightAzure]}
+            colors={getGradientColors()}
             style={{borderRadius: baseBorderRadius, backgroundColor: darkGray}}
             start={{x: 0, y: 1}}>
             <Box>
