@@ -38,7 +38,7 @@ const CityInput = styled.TextInput`
   padding: 0;
 `;
 
-const SearchCityInput = () => {
+const SearchCityInput = ({onSave}) => {
   // TRYME
   // https://github.com/AaronBank/react-native-city-picker
 
@@ -48,8 +48,9 @@ const SearchCityInput = () => {
     value => {
       dispatch(addCity(value.city));
       Keyboard.dismiss();
+      onSave();
     },
-    [dispatch],
+    [dispatch, onSave],
   );
 
   const {handleSubmit, handleChange, values} = useFormik({

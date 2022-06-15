@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, Dimensions} from 'react-native';
 import {useSelector} from 'react-redux';
 import CityCard from '../components/CityCard';
 import {primaryBlue} from '../assets/colors';
@@ -30,15 +30,14 @@ const Title = styled.Text`
 const HomeScreen = ({navigation}) => {
   const {value: cities} = useSelector(state => state.favouriteCities);
 
+  const screenHeight = Dimensions.get('window').height * 0.7; // TODO: remove fixed valued
+
   /*
     COSE DA FARE:
-    - Sistemare flatlist
-    - Eliminare città da preferiti
     - Splash screen
     - Navigation tabs
     - City screen
     - Store persistente in local storage
-    - Colori delle cards in base alle condizioni
     - Localizzazione
   */
 
@@ -49,6 +48,7 @@ const HomeScreen = ({navigation}) => {
         <AddNewCity />
       </HeaderContainer>
       <FlatList
+        style={{height: screenHeight}}
         data={cities}
         keyExtractor={(x, i) => i.toString()}
         renderItem={({item}) => (

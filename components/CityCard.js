@@ -1,21 +1,7 @@
-import React, {useCallback} from 'react';
-import {Image, TouchableOpacity} from 'react-native';
-import {
-  fontSizeSmall,
-  fontSizeMedium,
-  fontSizeXLarge,
-  fontSizeXXXLarge,
-} from '../assets/fontSize';
-import {spacingXXSmall, spacingXSmall, spacingSmall} from '../assets/spacing';
-import {baseBorderRadius} from '../assets/borderRadius';
-import {
-  white,
-  darkAzure,
-  lightAzure,
-  darkGray,
-  darkBlue,
-  lightGray,
-} from '../assets/colors';
+import React, {useCallback, useState} from 'react';
+import {TouchableOpacity} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {removeCity} from '../store/slices/favouriteCitiesSlice';
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useGetCityWeatherByNameQuery} from '../services/getWeather';
@@ -23,6 +9,33 @@ import {getMonthName, getFullHour, getFullDay} from '../utils';
 import clouds from '../assets/images/cloudy.png';
 import clear from '../assets/images/sunny.png';
 import sunAndRain from '../assets/images/sun-and-rain.png';
+import trash from '../assets/icons/trash.png';
+import moon from '../assets/images/moon.png';
+
+import {
+  fontSizeSmall,
+  fontSizeMedium,
+  fontSizeXLarge,
+  fontSizeXXXLarge,
+} from '../assets/fontSize';
+import {
+  spacingXXSmall,
+  spacingXSmall,
+  spacingSmall,
+  spacingMedium,
+} from '../assets/spacing';
+import {
+  white,
+  darkAzure,
+  lightAzure,
+  darkGray,
+  darkBlue,
+  lightGray,
+  darkRed,
+  lightRed,
+  lightBlue,
+} from '../assets/colors';
+import {baseBorderRadius} from '../assets/borderRadius';
 
 const Container = styled.View`
   margin-bottom: ${spacingSmall}px;
@@ -35,14 +48,23 @@ const Box = styled.View`
   align-items: center;
 `;
 
+const ErrorBox = styled.View`
+  padding: ${spacingMedium}px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const DataBox = styled.View`
   align-items: flex-start;
   flex-shrink: 1;
+  z-index: 10;
+  max-width: 50%;
 `;
 
 const ErrorText = styled.Text`
   font-size: ${fontSizeXLarge}px;
-  color: ${darkBlue};
+  color: ${white};
   font-family: 'Poppins-SemiBold';
 `;
 
@@ -70,14 +92,34 @@ const TemperatureText = styled.Text`
   font-family: 'Poppins-Bold';
   color: ${white};
   margin-left: ${spacingXXSmall}px;
+  z-index: 10;
+`;
+
+const WeatherImage = styled.Image`
+  position: absolute;
+  left: 45%;
+  top: 35%;
+  z-index: 1;
+`;
+
+const RemoveIcon = styled.Image`
+  height: 50px;
+  width: 50px;
 `;
 
 const CityCard = ({city, onPress}) => {
+  const [isRemoving, setIsRemoving] = useState(false);
+  const [deleteWhenError, setDeleteWhenError] = useState(false);
+  const dispatch = useDispatch();
+
   const {data, isError, refetch} = useGetCityWeatherByNameQuery(
     city.toLowerCase(),
   );
 
   const getWeatherIcon = useCallback(() => {
+    if (data && data.isNight) {
+      return moon;
+    }
     if (data && data.weather) {
       const image =
         data.weather === 'Clouds'
@@ -108,6 +150,9 @@ const CityCard = ({city, onPress}) => {
   */
 
   const getGradientColors = useCallback(() => {
+    if (data && data.isNight && data.weather !== 'Clouds') {
+      return [darkBlue, lightBlue];
+    }
     if (data && data.weather) {
       const colors =
         data.weather === 'Clouds'
@@ -119,33 +164,71 @@ const CityCard = ({city, onPress}) => {
     }
   }, [data]);
 
+  const handleRemoveCity = useCallback(() => {
+    dispatch(removeCity(city));
+    setIsRemoving(false);
+  }, [dispatch, city]);
+
   return (
     <Container>
-      {data && data.temp && data.weather && data.time && !isError && (
-        <TouchableOpacity onPress={onPress}>
-          <LinearGradient
-            colors={getGradientColors()}
-            style={{borderRadius: baseBorderRadius, backgroundColor: darkGray}}
-            start={{x: 0, y: 1}}>
-            <Box>
-              <DataBox>
-                <CityText>{city}</CityText>
-                <DateText>{getFullDay(data.time)}</DateText>
-                <DateText>{getMonthName(data.time)}</DateText>
-                <HourText>{getFullHour(data.time)}</HourText>
-              </DataBox>
+      {data &&
+        data.temp &&
+        data.weather &&
+        data.time &&
+        !isError &&
+        !isRemoving && (
+          <TouchableOpacity
+            onPress={onPress}
+            onLongPress={() => setIsRemoving(true)}>
+            <LinearGradient
+              colors={getGradientColors()}
+              style={{
+                borderRadius: baseBorderRadius,
+                backgroundColor: darkGray,
+              }}
+              start={{x: 0, y: 1}}>
+              <Box>
+                <DataBox>
+                  <CityText>{city}</CityText>
+                  <DateText>{getFullDay(data.time)}</DateText>
+                  <DateText>{getMonthName(data.time)}</DateText>
+                  <HourText>{getFullHour(data.time)}</HourText>
+                </DataBox>
 
-              <Image source={weatherIcon} />
-              <TemperatureText>{Math.round(data.temp)}°</TemperatureText>
-            </Box>
+                <WeatherImage source={weatherIcon} />
+                <TemperatureText>{Math.round(data.temp)}°</TemperatureText>
+              </Box>
+            </LinearGradient>
+          </TouchableOpacity>
+        )}
+      {isError && !deleteWhenError && (
+        <TouchableOpacity
+          onPress={refetch}
+          onLongPress={() => {
+            setIsRemoving(true);
+            setDeleteWhenError(true);
+          }}>
+          <LinearGradient
+            colors={[darkRed, lightRed]}
+            start={{x: 0, y: 1}}
+            style={{borderRadius: baseBorderRadius, backgroundColor: darkGray}}>
+            <ErrorBox>
+              <ErrorText>There is an error, press to retry</ErrorText>
+            </ErrorBox>
           </LinearGradient>
         </TouchableOpacity>
       )}
-      {isError && (
-        <TouchableOpacity onPress={refetch}>
-          <Box>
-            <ErrorText>There is an error, press to retry</ErrorText>
-          </Box>
+      {isRemoving && (
+        <TouchableOpacity onPress={handleRemoveCity}>
+          <LinearGradient
+            colors={[darkRed, lightRed]}
+            start={{x: 0, y: 1}}
+            style={{borderRadius: baseBorderRadius, backgroundColor: darkGray}}>
+            <ErrorBox>
+              <ErrorText>Press to remove</ErrorText>
+              <RemoveIcon source={trash} />
+            </ErrorBox>
+          </LinearGradient>
         </TouchableOpacity>
       )}
     </Container>

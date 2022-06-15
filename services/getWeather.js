@@ -1,5 +1,6 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {OPEN_WEATHER_KEY} from '@env';
+import {getTimeByTimezone} from '../utils';
 
 export const weatherApi = createApi({
   baseQuery: fetchBaseQuery({
@@ -12,15 +13,16 @@ export const weatherApi = createApi({
         url: `weather?q=${city}&appid=${OPEN_WEATHER_KEY}&units=metric`,
       }),
       transformResponse: response => {
+        const time = getTimeByTimezone(response.timezone);
         return {
           temp: response.main.temp,
           weather: response.weather[0].main,
-          time: new Date(response.dt * 1000 + response.timezone * 1000),
+          time,
+          isNight: time.getHours() >= 18 || time.getHours() < 6,
         };
       },
     }),
   }),
 });
 
-// Export hooks for usage in functional components
 export const {useGetCityWeatherByNameQuery} = weatherApi;

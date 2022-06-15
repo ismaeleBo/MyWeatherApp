@@ -9,4 +9,7 @@ export const lightAzure = '#77B9F5';
 export const darkBlue = '#011354';
 export const lightBlue = '#5B9FE3';
 
+export const darkRed = '#d90429';
+export const lightRed = '#ef233c';
+
 export const primaryBlue = '#01175F';

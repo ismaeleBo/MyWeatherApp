@@ -66,7 +66,7 @@ const AddNewCity = () => {
               <CloseButtonIcon source={cross} />
             </TouchableOpacity>
           </CloseButtonContainer>
-          <SearchCityInput />
+          <SearchCityInput onSave={() => setIsSearching(false)} />
         </CityInputContainer>
       )}
     </View>

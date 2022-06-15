@@ -3,7 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 export const favoriteCitiesSlice = createSlice({
   name: 'favouriteCities',
   initialState: {
-    value: ['London', 'Paris', 'New York'],
+    value: ['Paris', 'Florence', 'New York'],
   },
   reducers: {
     addCity: (state, action) => {

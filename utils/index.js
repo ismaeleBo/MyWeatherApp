@@ -57,3 +57,13 @@ export const getFullHour = date => {
 
   return `${fullHour}:${fullMinutes}`;
 };
+
+export const getTimeByTimezone = timezone => {
+  let d = new Date();
+  let localTime = d.getTime();
+  let localOffset = d.getTimezoneOffset() * 60000;
+  let utc = localTime + localOffset;
+  const remoteTime = utc + 1000 * timezone;
+
+  return new Date(remoteTime);
+};
