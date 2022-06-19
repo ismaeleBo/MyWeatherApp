@@ -27,10 +27,10 @@ const Title = styled.Text`
   margin-bottom: ${spacingMedium}px;
 `;
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = () => {
   const {value: cities} = useSelector(state => state.favouriteCities);
 
-  const listHeight = Dimensions.get('window').height * 0.7; // TODO: remove fixed valued
+  const listHeight = Dimensions.get('window').height * 0.7;
 
   /*
     TODO:
@@ -40,7 +40,9 @@ const HomeScreen = ({navigation}) => {
     - Save store in local storage
     - Localization
     - Set current location as favourite city
+    - Check internet connection
     - Refactor using TS
+    - Update data periodically
   */
 
   return (
@@ -53,12 +55,7 @@ const HomeScreen = ({navigation}) => {
         style={{height: listHeight}}
         data={cities}
         keyExtractor={(x, i) => i.toString()}
-        renderItem={({item}) => (
-          <CityCard
-            city={item.toString()}
-            onPress={() => navigation.navigate('City')}
-          />
-        )}
+        renderItem={({item}) => <CityCard city={item.toString()} />}
       />
     </Container>
   );

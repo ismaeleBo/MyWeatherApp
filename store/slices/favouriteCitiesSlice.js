@@ -14,15 +14,8 @@ export const favoriteCitiesSlice = createSlice({
     removeCity: (state, action) => {
       state.value = state.value.filter(city => city !== action.payload);
     },
-    getCitiesFromLocaleStorage: (state, action) => {
-      state.value = action.payload;
-    },
-    updateTemp: (state, action) => {
-      state.value = action.payload;
-    },
   },
 });
 
-export const {addCity, removeCity, getCitiesFromLocaleStorage, updateTemp} =
-  favoriteCitiesSlice.actions;
+export const {addCity, removeCity} = favoriteCitiesSlice.actions;
 export default favoriteCitiesSlice.reducer;

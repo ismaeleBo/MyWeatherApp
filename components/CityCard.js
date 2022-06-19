@@ -8,6 +8,7 @@ import {useGetCityWeatherByNameQuery} from '../services/getWeather';
 import {getMonthName, getFullHour, getFullDay} from '../utils';
 import clouds from '../assets/images/cloudy.png';
 import clear from '../assets/images/sunny.png';
+import rain from '../assets/images/rain.png';
 import sunAndRain from '../assets/images/sun-and-rain.png';
 import trash from '../assets/icons/trash.png';
 import moon from '../assets/images/moon.png';
@@ -16,7 +17,7 @@ import {
   fontSizeSmall,
   fontSizeMedium,
   fontSizeXLarge,
-  fontSizeXXXLarge,
+  fontSize4XLarge,
 } from '../assets/fontSize';
 import {
   spacingXXSmall,
@@ -36,6 +37,7 @@ import {
   lightBlue,
 } from '../assets/colors';
 import {baseBorderRadius} from '../assets/borderRadius';
+import {useNavigation} from '@react-navigation/native';
 
 const Container = styled.View`
   margin-bottom: ${spacingSmall}px;
@@ -88,7 +90,7 @@ const HourText = styled.Text`
 `;
 
 const TemperatureText = styled.Text`
-  font-size: ${fontSizeXXXLarge}px;
+  font-size: ${fontSize4XLarge}px;
   font-family: 'Poppins-Bold';
   color: ${white};
   margin-left: ${spacingXXSmall}px;
@@ -107,17 +109,23 @@ const RemoveIcon = styled.Image`
   width: 50px;
 `;
 
-const CityCard = ({city, onPress}) => {
+const CityCard = ({city}) => {
   const [isRemoving, setIsRemoving] = useState(false);
   const [deleteWhenError, setDeleteWhenError] = useState(false);
   const dispatch = useDispatch();
+
+  const navigation = useNavigation();
 
   const {data, isError, refetch} = useGetCityWeatherByNameQuery(
     city.toLowerCase(),
   );
 
   const getWeatherIcon = useCallback(() => {
-    if (data && data.isNight) {
+    if (
+      data &&
+      data.isNight &&
+      (data.weather === 'Clear' || data.weather === 'Drizzle')
+    ) {
       return moon;
     }
     if (data && data.weather) {
@@ -127,6 +135,8 @@ const CityCard = ({city, onPress}) => {
           : data.weather === 'Clear'
           ? clear
           : data.weather === 'Rain'
+          ? rain
+          : data.weather === 'Drizzle'
           ? sunAndRain
           : {
               uri: `http://openweathermap.org/img/wn/${data.weather.icon}`,
@@ -169,6 +179,22 @@ const CityCard = ({city, onPress}) => {
     setIsRemoving(false);
   }, [dispatch, city]);
 
+  const handlePress = useCallback(() => {
+    if (data && data.time) {
+      navigation.navigate({
+        name: 'City',
+        params: {
+          city,
+          colors: getGradientColors(),
+          weather: data.weather,
+          time: data.time,
+          temp: Math.round(data.temp),
+          icon: weatherIcon,
+        },
+      });
+    }
+  }, [city, data, getGradientColors, navigation, weatherIcon]);
+
   return (
     <Container>
       {data &&
@@ -178,7 +204,7 @@ const CityCard = ({city, onPress}) => {
         !isError &&
         !isRemoving && (
           <TouchableOpacity
-            onPress={onPress}
+            onPress={handlePress}
             onLongPress={() => setIsRemoving(true)}>
             <LinearGradient
               colors={getGradientColors()}
