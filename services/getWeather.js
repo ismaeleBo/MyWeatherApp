@@ -22,7 +22,13 @@ export const weatherApi = createApi({
         };
       },
     }),
+    getLocationForecast: build.query({
+      query: (lat, lon) => ({
+        url: `/forecast/hourly?lat=${lat}&lon=${lon}&appid=${OPEN_WEATHER_KEY}`,
+      }),
+    }),
   }),
 });
 
-export const {useGetCityWeatherByNameQuery} = weatherApi;
+export const {useGetCityWeatherByNameQuery, useGetLocationForecast} =
+  weatherApi;

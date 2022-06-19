@@ -30,15 +30,17 @@ const Title = styled.Text`
 const HomeScreen = ({navigation}) => {
   const {value: cities} = useSelector(state => state.favouriteCities);
 
-  const screenHeight = Dimensions.get('window').height * 0.7; // TODO: remove fixed valued
+  const listHeight = Dimensions.get('window').height * 0.7; // TODO: remove fixed valued
 
   /*
-    COSE DA FARE:
+    TODO:
     - Splash screen
     - Navigation tabs
     - City screen
-    - Store persistente in local storage
-    - Localizzazione
+    - Save store in local storage
+    - Localization
+    - Set current location as favourite city
+    - Refactor using TS
   */
 
   return (
@@ -48,7 +50,7 @@ const HomeScreen = ({navigation}) => {
         <AddNewCity />
       </HeaderContainer>
       <FlatList
-        style={{height: screenHeight}}
+        style={{height: listHeight}}
         data={cities}
         keyExtractor={(x, i) => i.toString()}
         renderItem={({item}) => (

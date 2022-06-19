@@ -21,21 +21,21 @@ export const getMonthName = date => {
 
 export const getDayName = dayNumber => {
   const days = [
+    'Sunday',
     'Monday',
     'Tuesday',
     'Wednesday',
     'Thursday',
     'Friday',
     'Saturday',
-    'Sunday',
   ];
 
   return days[dayNumber];
 };
 
 export const getFullDay = date => {
-  const day = date.getDay();
-  const dayName = getDayName(day);
+  const day = date.getDate();
+  const dayName = getDayName(date.getDay());
 
   return `${dayName} ${day},`;
 };
