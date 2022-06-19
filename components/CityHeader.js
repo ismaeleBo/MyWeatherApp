@@ -34,7 +34,7 @@ const CityHeader = ({title}) => {
         <Image source={arrow} />
       </TouchableOpacity>
       <Title>{title}</Title>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <TouchableOpacity onPress={() => null}>
         <Image source={plus} />
       </TouchableOpacity>
     </Container>
