@@ -5,6 +5,8 @@ Setup:
 
 `npm install`
 
+(IOS only)
+
 `cd ios`
 
 `pod install`
