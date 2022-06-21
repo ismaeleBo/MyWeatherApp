@@ -139,7 +139,7 @@ const CityCard = ({city}) => {
           : data.weather === 'Drizzle'
           ? sunAndRain
           : {
-              uri: `http://openweathermap.org/img/wn/${data.weather.icon}`,
+              uri: `http://openweathermap.org/img/wn/${data.weather.icon}@2x.png`,
             };
       return image;
     }
