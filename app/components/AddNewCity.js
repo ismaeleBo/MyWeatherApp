@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import React, { useState } from 'react';
+import { TouchableOpacity, View } from 'react-native';
 import styled from 'styled-components/native';
 import plus from '../assets/icons/plus.png';
 import cross from '../assets/icons/cross.png';
-import {fontSizeXXLarge} from '../assets/fontSize';
-import {spacingXSmall, spacingSmall} from '../assets/spacing';
-import {primaryBlue} from '../assets/colors';
+import { fontSizeXXLarge } from '../assets/fontSize';
+import { spacingXSmall, spacingSmall } from '../assets/spacing';
+import { primaryBlue } from '../assets/colors';
 import SearchCityInput from './SearchCityInput';
-import {baseBorderRadius} from '../assets/borderRadius';
+import { baseBorderRadius } from '../assets/borderRadius';
 
 const Container = styled.View`
   flex-direction: row;

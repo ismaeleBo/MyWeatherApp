@@ -6,7 +6,6 @@ import { fontSizeMedium } from '../assets/fontSize';
 import { lightRed, primaryBlue, white } from '../assets/colors';
 import { fullBorderRadius } from '../assets/borderRadius';
 import { spacingXSmall, spacingSmall } from '../assets/spacing';
-import Keychain from 'react-native-keychain';
 import { useNavigation } from '@react-navigation/native';
 import useBiometry from '../hooks/useBiometry';
 import { useSelector } from 'react-redux';

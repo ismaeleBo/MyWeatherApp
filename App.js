@@ -2,12 +2,12 @@ import React from 'react';
 import { LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './screens/HomeScreen';
-import CityScreen from './screens/CityScreen';
-import store, { persistor } from './store';
+import HomeScreen from './app/screens/HomeScreen';
+import CityScreen from './app/screens/CityScreen';
+import store, { persistor } from './app/store';
 import { Provider, useSelector } from 'react-redux';
-import SignupScreen from './screens/SignupScreen';
-import LoginScreen from './screens/LoginScreen';
+import SignupScreen from './app/screens/SignupScreen';
+import LoginScreen from './app/screens/LoginScreen';
 import { PersistGate } from 'redux-persist/integration/react';
 
 const Stack = createNativeStackNavigator();

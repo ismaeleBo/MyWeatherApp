@@ -1,13 +1,13 @@
-import React, {useCallback} from 'react';
-import {Keyboard} from 'react-native';
+import React, { useCallback } from 'react';
+import { Keyboard } from 'react-native';
 import styled from 'styled-components/native';
-import {useFormik} from 'formik';
-import {useDispatch} from 'react-redux';
-import {addCity} from '../store/slices/favouriteCitiesSlice';
-import {fontSizeMedium} from '../assets/fontSize';
-import {primaryBlue} from '../assets/colors';
-import {fullBorderRadius} from '../assets/borderRadius';
-import {spacingXSmall, spacingSmall} from '../assets/spacing';
+import { useFormik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { addCity } from '../store/slices/favouriteCitiesSlice';
+import { fontSizeMedium } from '../assets/fontSize';
+import { primaryBlue } from '../assets/colors';
+import { fullBorderRadius } from '../assets/borderRadius';
+import { spacingXSmall, spacingSmall } from '../assets/spacing';
 
 const Container = styled.View`
   flex-direction: row;
@@ -38,23 +38,23 @@ const CityInput = styled.TextInput`
   padding: 0;
 `;
 
-const SearchCityInput = ({onSave}) => {
+const SearchCityInput = ({ onSave }) => {
   // TRYME
   // https://github.com/AaronBank/react-native-city-picker
 
   const dispatch = useDispatch();
 
   const addFavouriteCity = useCallback(
-    value => {
+    (value) => {
       dispatch(addCity(value.city));
       Keyboard.dismiss();
       onSave();
     },
-    [dispatch, onSave],
+    [dispatch, onSave]
   );
 
-  const {handleSubmit, handleChange, values} = useFormik({
-    initialValues: {city: ''},
+  const { handleSubmit, handleChange, values } = useFormik({
+    initialValues: { city: '' },
     onSubmit: addFavouriteCity,
   });
 

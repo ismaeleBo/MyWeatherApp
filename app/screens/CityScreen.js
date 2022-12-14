@@ -1,12 +1,12 @@
 import React from 'react';
-import {StyleSheet, Image} from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import CityHeader from '../components/CityHeader';
-import {spacingXSmall, spacingSmall, spacingMedium} from '../assets/spacing';
-import {fontSizeLarge, fontSize5XLarge} from '../assets/fontSize';
+import { spacingXSmall, spacingSmall, spacingMedium } from '../assets/spacing';
+import { fontSizeLarge, fontSize5XLarge } from '../assets/fontSize';
 import styled from 'styled-components/native';
-import {white} from '../assets/colors';
-import {getFullDay, getMonthName} from '../utils';
+import { white } from '../assets/colors';
+import { getFullDay, getMonthName } from '../utils';
 
 const Container = styled.View`
   padding-top: ${spacingXSmall}px;
@@ -42,8 +42,8 @@ const TemperatureText = styled.Text`
   color: ${white};
 `;
 
-const CityScreen = ({route}) => {
-  const {city, colors, weather, time, temp, icon} = route.params;
+const CityScreen = ({ route }) => {
+  const { city, colors, weather, time, temp, icon } = route.params;
 
   return (
     <LinearGradient colors={colors} style={styles.linearGradient}>

@@ -1,10 +1,23 @@
 import React from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, Switch, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { spacingXSmall, spacingSmall, spacingMedium } from '../assets/spacing';
-import { fontSizeLarge, fontSize5XLarge } from '../assets/fontSize';
+import {
+  fontSizeLarge,
+  fontSize5XLarge,
+  fontSizeMedium,
+} from '../assets/fontSize';
 import styled from 'styled-components/native';
-import { orange, white, green } from '../assets/colors';
+import {
+  orange,
+  white,
+  green,
+  primaryBlue,
+  darkGray,
+  lightBlue,
+  lightAzure,
+  darkAzure,
+} from '../assets/colors';
 import SignupForm from '../components/SignupForm';
 
 const Container = styled.View`
@@ -24,14 +37,40 @@ const Heading = styled.Text`
   margin-bottom: ${spacingSmall}px;
 `;
 
+const BiometryContainer = styled.View`
+  margin-top: ${spacingMedium}px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const BiometryText = styled.Text`
+  font-size: ${fontSizeMedium}px;
+  font-family: 'Poppins-Medium';
+`;
+
+const ToggleBiometry = styled.Switch``;
+
 const SignupScreen = () => {
   const colors = [orange, green];
+  const isBiometryEnabled = false;
 
   return (
     <LinearGradient colors={colors} style={styles.linearGradient}>
       <Container>
         <Heading>Create an account</Heading>
         <SignupForm />
+        <BiometryContainer>
+          <BiometryText>Use biometry to access</BiometryText>
+          <ToggleBiometry
+            trackColor={{ false: darkGray, true: darkAzure }}
+            thumbColor={white}
+            ios_backgroundColor='#3e3e3e'
+            onValueChange={() => null}
+            value={isBiometryEnabled}
+          />
+        </BiometryContainer>
       </Container>
     </LinearGradient>
   );

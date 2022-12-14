@@ -1,10 +1,10 @@
 import React from 'react';
-import {Image, TouchableOpacity} from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
-import {white} from '../assets/colors';
-import {fontSize3XLarge} from '../assets/fontSize';
-import {spacingSmall, spacingXLarge} from '../assets/spacing';
-import {useNavigation} from '@react-navigation/native';
+import { white } from '../assets/colors';
+import { fontSize3XLarge } from '../assets/fontSize';
+import { spacingSmall, spacingXLarge } from '../assets/spacing';
+import { useNavigation } from '@react-navigation/native';
 import arrow from '../assets/icons/arrow-left.png';
 import plus from '../assets/icons/plus-white.png';
 
@@ -25,7 +25,7 @@ const Container = styled.View`
   align-items: center;
 `;
 
-const CityHeader = ({title}) => {
+const CityHeader = ({ title }) => {
   const navigation = useNavigation();
 
   return (
