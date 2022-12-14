@@ -1,18 +1,18 @@
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {OPEN_WEATHER_KEY} from '@env';
-import {getTimeByTimezone} from '../utils';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { OPEN_WEATHER_KEY } from '@env';
+import { getTimeByTimezone } from '../utils';
 
 export const weatherApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://api.openweathermap.org/data/2.5',
   }),
   tagTypes: [],
-  endpoints: build => ({
+  endpoints: (build) => ({
     getCityWeatherByName: build.query({
-      query: city => ({
+      query: (city) => ({
         url: `weather?q=${city}&appid=${OPEN_WEATHER_KEY}&units=metric`,
       }),
-      transformResponse: response => {
+      transformResponse: (response) => {
         const time = getTimeByTimezone(response.timezone);
         return {
           temp: response.main.temp,
@@ -30,5 +30,5 @@ export const weatherApi = createApi({
   }),
 });
 
-export const {useGetCityWeatherByNameQuery, useGetLocationForecast} =
+export const { useGetCityWeatherByNameQuery, useGetLocationForecast } =
   weatherApi;

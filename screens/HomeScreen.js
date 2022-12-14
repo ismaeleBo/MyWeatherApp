@@ -1,12 +1,13 @@
 import React from 'react';
-import {FlatList, Dimensions} from 'react-native';
-import {useSelector} from 'react-redux';
+import { FlatList, Dimensions } from 'react-native';
+import { useSelector } from 'react-redux';
 import CityCard from '../components/CityCard';
-import {primaryBlue} from '../assets/colors';
-import {fontSizeXXLarge} from '../assets/fontSize';
-import {spacingSmall, spacingMedium, spacingXLarge} from '../assets/spacing';
+import { primaryBlue } from '../assets/colors';
+import { fontSizeXXLarge } from '../assets/fontSize';
+import { spacingSmall, spacingMedium, spacingXLarge } from '../assets/spacing';
 import styled from 'styled-components/native';
 import AddNewCity from '../components/AddNewCity';
+import { capitalize } from '../utils';
 
 const Container = styled.View`
   padding-left: ${spacingSmall}px;
@@ -28,10 +29,10 @@ const Title = styled.Text`
 `;
 
 const HomeScreen = () => {
-  const {value: cities} = useSelector(state => state.favouriteCities);
+  const { value: cities } = useSelector((state) => state.favouriteCities);
 
-  const listHeight = Dimensions.get('window').height * 0.7;
-
+  const listHeight = Dimensions.get('window').height * 0.6;
+  const { username } = useSelector((state) => state.user);
   /*
     TODO:
     - Splash screen
@@ -48,14 +49,14 @@ const HomeScreen = () => {
   return (
     <Container>
       <HeaderContainer>
-        <Title>Good morning!</Title>
+        <Title>Good morning {username ? capitalize(username) : ''}!</Title>
         <AddNewCity />
       </HeaderContainer>
       <FlatList
-        style={{height: listHeight}}
+        style={{ height: listHeight, paddingBottom: listHeight / 2 }}
         data={cities}
         keyExtractor={(x, i) => i.toString()}
-        renderItem={({item}) => <CityCard city={item.toString()} />}
+        renderItem={({ item }) => <CityCard city={item.toString()} />}
       />
     </Container>
   );

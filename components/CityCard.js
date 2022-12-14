@@ -1,11 +1,11 @@
-import React, {useCallback, useState} from 'react';
-import {TouchableOpacity} from 'react-native';
-import {useDispatch} from 'react-redux';
-import {removeCity} from '../store/slices/favouriteCitiesSlice';
+import React, { useCallback, useState } from 'react';
+import { TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { removeCity } from '../store/slices/favouriteCitiesSlice';
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
-import {useGetCityWeatherByNameQuery} from '../services/getWeather';
-import {getMonthName, getFullHour, getFullDay} from '../utils';
+import { useGetCityWeatherByNameQuery } from '../services/getWeather';
+import { getMonthName, getFullHour, getFullDay } from '../utils';
 import clouds from '../assets/images/cloudy.png';
 import clear from '../assets/images/sunny.png';
 import rain from '../assets/images/rain.png';
@@ -36,8 +36,8 @@ import {
   lightRed,
   lightBlue,
 } from '../assets/colors';
-import {baseBorderRadius} from '../assets/borderRadius';
-import {useNavigation} from '@react-navigation/native';
+import { baseBorderRadius } from '../assets/borderRadius';
+import { useNavigation } from '@react-navigation/native';
 
 const Container = styled.View`
   margin-bottom: ${spacingSmall}px;
@@ -109,15 +109,15 @@ const RemoveIcon = styled.Image`
   width: 50px;
 `;
 
-const CityCard = ({city}) => {
+const CityCard = ({ city }) => {
   const [isRemoving, setIsRemoving] = useState(false);
   const [deleteWhenError, setDeleteWhenError] = useState(false);
   const dispatch = useDispatch();
 
   const navigation = useNavigation();
 
-  const {data, isError, refetch} = useGetCityWeatherByNameQuery(
-    city.toLowerCase(),
+  const { data, isError, refetch, isLoading } = useGetCityWeatherByNameQuery(
+    city.toLowerCase()
   );
 
   const getWeatherIcon = useCallback(() => {
@@ -205,25 +205,33 @@ const CityCard = ({city}) => {
         !isRemoving && (
           <TouchableOpacity
             onPress={handlePress}
-            onLongPress={() => setIsRemoving(true)}>
+            onLongPress={() => setIsRemoving(true)}
+          >
             <LinearGradient
               colors={getGradientColors()}
               style={{
                 borderRadius: baseBorderRadius,
                 backgroundColor: darkGray,
               }}
-              start={{x: 0, y: 1}}>
-              <Box>
-                <DataBox>
-                  <CityText>{city}</CityText>
-                  <DateText>{getFullDay(data.time)}</DateText>
-                  <DateText>{getMonthName(data.time)}</DateText>
-                  <HourText>{getFullHour(data.time)}</HourText>
-                </DataBox>
+              start={{ x: 0, y: 1 }}
+            >
+              {isLoading ? (
+                <Box>
+                  <ActivityIndicator />
+                </Box>
+              ) : (
+                <Box>
+                  <DataBox>
+                    <CityText>{city}</CityText>
+                    <DateText>{getFullDay(data.time)}</DateText>
+                    <DateText>{getMonthName(data.time)}</DateText>
+                    <HourText>{getFullHour(data.time)}</HourText>
+                  </DataBox>
 
-                <WeatherImage source={weatherIcon} />
-                <TemperatureText>{Math.round(data.temp)}°</TemperatureText>
-              </Box>
+                  <WeatherImage source={weatherIcon} />
+                  <TemperatureText>{Math.round(data.temp)}°</TemperatureText>
+                </Box>
+              )}
             </LinearGradient>
           </TouchableOpacity>
         )}
@@ -233,11 +241,16 @@ const CityCard = ({city}) => {
           onLongPress={() => {
             setIsRemoving(true);
             setDeleteWhenError(true);
-          }}>
+          }}
+        >
           <LinearGradient
             colors={[darkRed, lightRed]}
-            start={{x: 0, y: 1}}
-            style={{borderRadius: baseBorderRadius, backgroundColor: darkGray}}>
+            start={{ x: 0, y: 1 }}
+            style={{
+              borderRadius: baseBorderRadius,
+              backgroundColor: darkGray,
+            }}
+          >
             <ErrorBox>
               <ErrorText>There is an error, press to retry</ErrorText>
             </ErrorBox>
@@ -248,8 +261,12 @@ const CityCard = ({city}) => {
         <TouchableOpacity onPress={handleRemoveCity}>
           <LinearGradient
             colors={[darkRed, lightRed]}
-            start={{x: 0, y: 1}}
-            style={{borderRadius: baseBorderRadius, backgroundColor: darkGray}}>
+            start={{ x: 0, y: 1 }}
+            style={{
+              borderRadius: baseBorderRadius,
+              backgroundColor: darkGray,
+            }}
+          >
             <ErrorBox>
               <ErrorText>Press to remove</ErrorText>
               <RemoveIcon source={trash} />

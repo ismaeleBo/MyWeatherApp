@@ -1,4 +1,4 @@
-export const getMonthName = date => {
+export const getMonthName = (date) => {
   const months = [
     'January',
     'February',
@@ -19,7 +19,7 @@ export const getMonthName = date => {
   return months[monthNumber];
 };
 
-export const getDayName = dayNumber => {
+export const getDayName = (dayNumber) => {
   const days = [
     'Sunday',
     'Monday',
@@ -33,14 +33,14 @@ export const getDayName = dayNumber => {
   return days[dayNumber];
 };
 
-export const getFullDay = date => {
+export const getFullDay = (date) => {
   const day = date.getDate();
   const dayName = getDayName(date.getDay());
 
   return `${dayName} ${day},`;
 };
 
-export const getFullHour = date => {
+export const getFullHour = (date) => {
   const hour = date.getHours();
   const minutes = date.getMinutes();
 
@@ -58,7 +58,7 @@ export const getFullHour = date => {
   return `${fullHour}:${fullMinutes}`;
 };
 
-export const getTimeByTimezone = timezone => {
+export const getTimeByTimezone = (timezone) => {
   let d = new Date();
   let localTime = d.getTime();
   let localOffset = d.getTimezoneOffset() * 60000;
@@ -67,3 +67,6 @@ export const getTimeByTimezone = timezone => {
 
   return new Date(remoteTime);
 };
+
+export const capitalize = (s) =>
+  s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();

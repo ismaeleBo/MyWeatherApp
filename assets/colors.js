@@ -13,3 +13,13 @@ export const darkRed = '#d90429';
 export const lightRed = '#ef233c';
 
 export const primaryBlue = '#01175F';
+
+export const yellow = '#FFBC0A';
+
+export const purple = '#454372';
+
+export const bluesky = '#65DEF1';
+
+export const orange = '#F96900';
+
+export const green = '#72B01D';

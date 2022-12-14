@@ -19,6 +19,8 @@ target 'MyWeatherApp' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'RNKeychain', :path => '../node_modules/react-native-keychain'
+
   target 'MyWeatherAppTests' do
     inherit! :complete
     # Pods for testing
