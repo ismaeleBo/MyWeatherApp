@@ -42,15 +42,15 @@ const SignupForm = () => {
   const navigation = useNavigation();
 
   const createAccount = useCallback(async (value) => {
-    // Dispatch addUser action
-    dispatch(addUser(value));
-
     // Save password in keychain
     await Keychain.setGenericPassword(value.username, value.password, {
       service: 'user-service',
       accessControl: 'BiometryAny',
       accessible: 'AccessibleWhenPasscodeSetThisDeviceOnly',
     });
+
+    // Dispatch addUser action
+    dispatch(addUser(value));
 
     Keyboard.dismiss();
 

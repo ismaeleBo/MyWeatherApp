@@ -43,11 +43,7 @@
 
   UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"MyWeatherApp", nil);
 
-  if (@available(iOS 13.0, *)) {
-    rootView.backgroundColor = [UIColor systemBackgroundColor];
-  } else {
-    rootView.backgroundColor = [UIColor whiteColor];
-  }
+  rootView.backgroundColor = [UIColor colorWithRed:0.46667 green:0.72549 blue:0.96078 alpha:1.00000];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];

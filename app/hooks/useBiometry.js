@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import { AppState } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 
@@ -38,11 +39,13 @@ const useBiometry = () => {
     return 'TouchID';
   };
 
+  const { biometryActive } = useSelector((state) => state.user);
+
   useEffect(() => {
     // Set canUseBiometrics and biometricsType if available
     const checkBiometrics = async () => {
       const biometryType = await getBiometryType();
-      if (biometryType !== 'None') {
+      if (biometryType !== 'None' && biometryActive) {
         setCanUseBiometrics(true);
       }
       setBiometricsType(biometryType);

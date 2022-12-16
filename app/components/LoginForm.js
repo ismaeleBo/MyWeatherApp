@@ -48,7 +48,6 @@ const ErrorMessage = styled.Text`
 const LoginForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [signupButtonVisible, setSignupButtonVisible] = useState(false);
-
   const biometry = useBiometry();
   const navigation = useNavigation();
 

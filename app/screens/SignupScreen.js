@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, Switch, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { spacingXSmall, spacingSmall, spacingMedium } from '../assets/spacing';
@@ -19,6 +19,8 @@ import {
   darkAzure,
 } from '../assets/colors';
 import SignupForm from '../components/SignupForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleBiometry } from '../store/slices/userSlice';
 
 const Container = styled.View`
   padding-top: ${spacingXSmall}px;
@@ -54,7 +56,12 @@ const ToggleBiometry = styled.Switch``;
 
 const SignupScreen = () => {
   const colors = [orange, green];
-  const isBiometryEnabled = false;
+
+  const { biometryActive } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
+  const handleBiometryToggle = () => dispatch(toggleBiometry());
 
   return (
     <LinearGradient colors={colors} style={styles.linearGradient}>
@@ -67,8 +74,8 @@ const SignupScreen = () => {
             trackColor={{ false: darkGray, true: darkAzure }}
             thumbColor={white}
             ios_backgroundColor='#3e3e3e'
-            onValueChange={() => null}
-            value={isBiometryEnabled}
+            onValueChange={handleBiometryToggle}
+            value={biometryActive}
           />
         </BiometryContainer>
       </Container>

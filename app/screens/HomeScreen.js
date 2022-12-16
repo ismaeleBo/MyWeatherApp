@@ -29,7 +29,7 @@ const Title = styled.Text`
 `;
 
 const HomeScreen = () => {
-  const { value: cities } = useSelector((state) => state.favouriteCities);
+  const { list: cities } = useSelector((state) => state.favouriteCities);
 
   const listHeight = Dimensions.get('window').height * 0.6;
   const { username } = useSelector((state) => state.user);

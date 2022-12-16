@@ -4,13 +4,13 @@ import userReducer from './slices/userSlice';
 import { weatherApi } from '../services/getWeather';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { persistStore, persistReducer } from 'redux-persist';
-import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['username', 'password', 'value'],
+  whitelist: ['username', 'password', 'isLogged', 'list', 'biometryActive'],
+  timeout: 0,
 };
 
 const persistedUserReducer = persistReducer(persistConfig, userReducer);
